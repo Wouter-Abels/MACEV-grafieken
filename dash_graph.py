@@ -13,8 +13,8 @@ from dash.dependencies import Input, Output
 #---------------------------------------------
 
 # Load data
-total_plot_data = pd.read_csv('aquadash_v2/assets/total_plot_data.csv')
-historic_and_data = pd.read_csv('aquadash_v2/assets/historic_and_data.csv')
+total_plot_data = pd.read_csv('assets/total_plot_data.csv')
+historic_and_data = pd.read_csv('assets/historic_and_data.csv')
 unique_measurementobject = np.sort(pd.unique(historic_and_data['measurementobjectname']))
 macev_taxongroup_colours = {
     'Annelida/Platyhelminthes - Hirudinea':'aqua', \
