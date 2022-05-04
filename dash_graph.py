@@ -13,9 +13,7 @@ from dash.dependencies import Input, Output
 #---------------------------------------------
 
 # Load data
-total_plot_data = pd.read_csv('assets/total_plot_data.csv')
 historic_and_data = pd.read_csv('assets/historic_and_data.csv')
-unique_measurementobject = np.sort(pd.unique(historic_and_data['measurementobjectname']))
 macev_taxongroup_colours = {
     'Annelida/Platyhelminthes - Hirudinea':'aqua', \
     'Annelida/Platyhelminthes - Polychaeta':'skyblue', \
@@ -80,12 +78,17 @@ def relative_data_location_per_year(object, historic_and_data):
     relative_data_location_year = relative_data_location_year
     return relative_data_location_year
 
+total_plot_data = value_per_year(historic_and_data)
+unique_measurementobject = np.sort(pd.unique(historic_and_data['measurementobjectname']))
+
 # Build App
 app = dash.Dash(__name__)
 app.layout =html.Div([
-        html.H1('MACEV data 2015-2021'),
+        html.H1('Macroevertebraten Abundantie'),
+        html.H2('Perceel A t/m C, 2015-2021 '),
         dcc.RadioItems(id='abundance_radio', options= [{'label': 'Totale Abundantie', 'value':'Totale Abundantie'},{'label': 'Relatieve Abundantie', 'value': 'Relatieve Abundantie',}], value= 'Totale Abundantie', labelStyle={'display': 'inline-block'}),
         dcc.Graph(id= 'abundance_graph'),
+        html.P('Meetobject'),
         dcc.Dropdown(id= 'object_dropdown', options=[{'label': i, 'value': i} for i in unique_measurementobject], value= unique_measurementobject[0]),
         dcc.Graph(id= 'object_graph')
         ])
@@ -96,8 +99,8 @@ app.layout =html.Div([
     )
 
 def graph_total_update(dropdown_value):
-    fig = px.bar(total_plot_data, color_discrete_map=macev_taxongroup_colours, title='Totale Abundantie', template='simple_white', orientation='h', labels={'value': 'Totale Abundantie (n)', 'index': 'Jaar', 'Taxongroup': 'Taxongroep'})
-    fig1 = px.bar(total_plot_data.apply(lambda x: x*100/sum(x),axis=1), color_discrete_map=macev_taxongroup_colours, title='Relatieve Abundantie MACEV 2021-2015', template='simple_white', orientation='h', labels={'value': 'Relatieve Abundantie (%)', 'index': 'Jaar', 'Taxongroup': 'Taxongroep'})
+    fig = px.bar(total_plot_data, color_discrete_map=macev_taxongroup_colours, title='Totale Abundantie', template='simple_white', orientation='h', labels={'value': 'Totale Abundantie (n)', 'index': 'Jaar', 'variable': 'Taxongroep'})
+    fig1 = px.bar(total_plot_data.apply(lambda x: x*100/sum(x),axis=1), color_discrete_map=macev_taxongroup_colours, title='Relatieve Abundantie', template='simple_white', orientation='h', labels={'value': 'Relatieve Abundantie (%)', 'index': 'Jaar', 'variable': 'Taxongroep'})
     if dropdown_value == 'Totale Abundantie':
         return fig
     elif dropdown_value == 'Relatieve Abundantie':
