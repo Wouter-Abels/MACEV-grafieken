@@ -8,7 +8,7 @@ from dash.dependencies import Input, Output
 # File: dash_test.ipynb
 # Author: Wouter Abels (wouter.abels@rws.nl)
 # Created: 21/02/22
-# Last modified: 04/04/22
+# Last modified: 04/05/22
 # Python ver: 3.9.7
 #---------------------------------------------
 
@@ -123,4 +123,4 @@ def graph_object_update(dropdown_object, dropdown_value):
                 return fig3
 
 # Run app
-app.run_server(debug=True)
+app.run_server()
