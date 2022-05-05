@@ -5,7 +5,7 @@ import pandas as pd
 from dash.dependencies import Input, Output
 
 #---------------------------------------------
-# File: dash_test.ipynb
+# File: dash_graph.py
 # Author: Wouter Abels (wouter.abels@rws.nl)
 # Created: 21/02/22
 # Last modified: 04/05/22
