@@ -126,4 +126,5 @@ def graph_object_update(dropdown_object, dropdown_value):
                 return fig3
 
 # Run app
-app.run_server()
+if __name__ == '__main__':
+    app.run_server(debug=True)
