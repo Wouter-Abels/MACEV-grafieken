@@ -86,7 +86,7 @@ app = dash.Dash(__name__)
 app.layout =html.Div([
         html.H1('Macroevertebraten Abundantie'),
         html.H2('Perceel A t/m C, 2015-2021 '),
-        dcc.RadioItems(id='abundance_radio', options= [{'label': 'Totale Abundantie', 'value':'Totale Abundantie'},{'label': 'Relatieve Abundantie', 'value': 'Relatieve Abundantie',}], value= 'Totale Abundantie', labelStyle={'display': 'inline-block'}),
+        dcc.RadioItems(id='abundance_radio', options= [{'label': 'Totale Abundantie', 'value':'Totale Abundantie'},{'label': 'Relatieve Abundantie', 'value': 'Relatieve Abundantie',}], value= 'Totale Abundantie', labelStyle={'display': 'inline-block'}, style=dict(display='flex', justifyContent='center')),
         dcc.Graph(id= 'abundance_graph'),
         html.P('Meetobject'),
         dcc.Dropdown(id= 'object_dropdown', options=[{'label': i, 'value': i} for i in unique_measurementobject], value= unique_measurementobject[0]),
