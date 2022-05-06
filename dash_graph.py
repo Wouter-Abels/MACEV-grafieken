@@ -99,8 +99,8 @@ app.layout =html.Div([
     )
 
 def graph_total_update(dropdown_value):
-    fig = px.bar(total_plot_data, color_discrete_map=macev_taxongroup_colours, title='Totale Abundantie', template='simple_white', orientation='h', labels={'value': 'Totale Abundantie (n)', 'index': 'Jaar', 'variable': 'Taxongroep'})
-    fig1 = px.bar(total_plot_data.apply(lambda x: x*100/sum(x),axis=1), color_discrete_map=macev_taxongroup_colours, title='Relatieve Abundantie', template='simple_white', orientation='h', labels={'value': 'Relatieve Abundantie (%)', 'index': 'Jaar', 'variable': 'Taxongroep'})
+    fig = px.bar(total_plot_data, color_discrete_map=macev_taxongroup_colours, title='Totale Abundantie', template='simple_white', orientation='h', labels={'value': 'Totale Abundantie (n)', 'index': 'Jaar', 'Taxongroup': 'Taxongroep'})
+    fig1 = px.bar(total_plot_data.apply(lambda x: x*100/sum(x),axis=1), color_discrete_map=macev_taxongroup_colours, title='Relatieve Abundantie', template='simple_white', orientation='h', labels={'value': 'Relatieve Abundantie (%)', 'index': 'Jaar', 'Taxongroup': 'Taxongroep'})
     if dropdown_value == 'Totale Abundantie':
         return fig
     elif dropdown_value == 'Relatieve Abundantie':
