@@ -82,7 +82,7 @@ total_plot_data = value_per_year(historic_and_data)
 unique_measurementobject = np.sort(pd.unique(historic_and_data['measurementobjectname']))
 
 # Build App
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, title='MACEV Grafieken')
 app.layout =html.Div([
         html.H1('Macroevertebraten Abundantie'),
         html.H2('Perceel A t/m C, 2015-2021 '),
@@ -127,4 +127,4 @@ def graph_object_update(dropdown_object, dropdown_value):
 
 # Run app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
