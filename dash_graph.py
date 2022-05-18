@@ -1,5 +1,5 @@
 import plotly.express as px
-from dash import dcc, html, dash
+from dash import dcc, html, dash, dash_table
 import numpy as np
 import pandas as pd
 from dash.dependencies import Input, Output
@@ -90,7 +90,9 @@ app.layout =html.Div([
         dcc.Graph(id= 'abundance_graph'),
         html.P('Meetobject'),
         dcc.Dropdown(id= 'object_dropdown', options=[{'label': i, 'value': i} for i in unique_measurementobject], value= unique_measurementobject[0]),
-        dcc.Graph(id= 'object_graph')
+        dcc.Graph(id= 'object_graph'),
+        html.P('Tabel'),
+        dash_table.DataTable(data=historic_and_data.to_dict('records'), columns=[{'name': i, 'id':i} for i in historic_and_data.columns])
         ])
 
 @app.callback(
