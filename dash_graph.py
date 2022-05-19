@@ -85,7 +85,7 @@ unique_measurementobject = np.sort(pd.unique(historic_and_data['measurementobjec
 app = dash.Dash(__name__, title='MACEV Grafieken')
 app.layout =html.Div([
         html.H1('Macroevertebraten Abundantie'),
-        html.H2('Perceel A t/m C, 2015-2021 '),
+        html.H2('2015-2021'),
         dcc.RadioItems(id='abundance_radio', options= [{'label': 'Totale Abundantie', 'value':'Totale Abundantie'},{'label': 'Relatieve Abundantie', 'value': 'Relatieve Abundantie',}], value= 'Totale Abundantie', labelStyle={'display': 'inline-block'}, style=dict(display='flex', justifyContent='center')),
         dcc.Graph(id= 'abundance_graph'),
         html.P('Meetobject'),
