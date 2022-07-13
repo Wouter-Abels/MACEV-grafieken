@@ -32,7 +32,7 @@ for object in unique_measurementobject:
     historic_and_current = all_per_location.append(historic_and_current)
     historic_location = historic_per_location.append(historic_location)
 total_plot_data = graphs.value_per_year(historic_and_current)
-logo = ('W_RW_Logo_online_pos_nl.png')
+logo = ('IW_RW_Logo_online_pos_nl.png')
 footer = 'Wouter Abels (wouterabels@rws.nl 13 Juli 2022 Python 3.9.7'
 
 
@@ -54,7 +54,7 @@ index_page = html.Div(id='index', children= [
         dcc.Link('Validatie', href='/validation', className='link')
     ]),
     html.H1('Geautomatiseerde validatie van Macro-Evertebraten'),
-    html.P('Dit rapport betreft de geautomatiseerde datavalidatiemethode voor het controleren van de dataoplevering van perceel A, B (Randmeren en Trintelzand) en C (Maas). Al de data is dir ect uit de aquadesk gehaald.'),
+    html.P('Dit rapport betreft de geautomatiseerde datavalidatiemethode voor het controleren van de dataoplevering van perceel A, B (Randmeren en Trintelzand) en C (Maas). Al de data is direct uit de aquadesk gehaald.'),
     html.P('In dit rapport zijn de volgende validatie stappen uitgevoerd:'),
     html.Ul(children= [
         html.Li('Collectienummers zijn gevalideerd op notatie van het juiste jaartal.'), 
@@ -294,7 +294,6 @@ def display_page(pathname):
         return validation_page
     else:
         return index_page
-
 
 ## Run app ##
 if __name__ == '__main__':
