@@ -1,18 +1,12 @@
+.link {
+    margin: 15px;
+}
+
 img { 
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 25%;
-}
-
-.link {
-    margin: 15px;
-}
-
-#map-div { 
-    margin: auto;
-    width: 90%;
-    height: 75vh;
 }
 
 h1 { 
@@ -53,15 +47,55 @@ Footer {
     text-decoration-line: underline;
 }
 
-#graph-page{
+#index-text-map {
+    left:50%;
+    top:50%;
+    display: flex;
+    flex-direction: row;
     margin: auto;
     width: 90%;
-    height: 75vh;
+    padding: 20px;
+}
+
+#index-text{
+    width: 90%;
+    flex: 60%;
+    padding-right: 15px;
+}
+
+#index-map{ 
+    align-self: center;
+    width: 90%;
+    flex: 40%;
+    height: 70vh;
+    padding-left: 15px;
+}
+
+#graph-total{
+    margin: auto;
+    width: 90%;
+}
+
+#abundance-radio{
+    font-weight:300;
+    margin: 16px 0;
+    font-size: 20px;
+    color:#000000;
+    line-height: 1.25;
+    margin: auto;
+    width: 90%;
+}
+
+#abundance_graph {
+    margin: auto;
+    width: 90%;
 }
 
 #graph-dropdown-objects {
     display: flex; 
-    flex-direction: row
+    flex-direction: row;
+    margin: auto;
+    width: 90%;
 }
 
 #dropdown-objects {
@@ -72,14 +106,6 @@ Footer {
 #graph-objects {
     padding: 10;
     flex: 80%;
-}
-
-#abundance-radio{
-    font-weight:300;
-    margin: 16px 0;
-    font-size: 20px;
-    color:#000000;
-    line-height: 1.25;
 }
 
 #dropdown-and-table{

@@ -53,35 +53,40 @@ index_page = html.Div(id='index', children= [
         dcc.Link('Grafieken', href='/graphs', className='link'),
         dcc.Link('Validatie', href='/validation', className='link')
     ]),
-    html.H1('Geautomatiseerde validatie van Macro-Evertebraten'),
-    html.P('Dit rapport betreft de geautomatiseerde datavalidatiemethode voor het controleren van de dataoplevering van perceel A, B (Randmeren en Trintelzand) en C (Maas). Al de data is direct uit de aquadesk gehaald.'),
-    html.P('In dit rapport zijn de volgende validatie stappen uitgevoerd:'),
-    html.Ul(children= [
-        html.Li('Collectienummers zijn gevalideerd op notatie van het juiste jaartal.'), 
-        html.Li('Taxon statuscode van de gedetermineerde soorten worden gecontroleerd met de TWN lijst.'),
-        html.Li('Voor de taxongroepen Oligochaeta en Chironomiden is er gevalideerd of er wel minimaal 100 zijn gedetermineerd wanneer de berekende waarde 100 of hoger is.'),
-        html.Li('Voor de resterende taxongroepen is een soortgelijke validatie uitgevoerd maar dan met minimaal 50 gedetermineerde individuen.'),
-        html.Li('Er is gevalideerd wanneer er getallen met een factor worden doorgerekend of dit ook genoteerd is met een limietsymbool.'),
-        html.Li('De nieuwe data wordt vergeleken met historische data van de afgelopen 6 jaar om te kijken of er soorten niet zijn gevonden bij deze metingen die wel in het verleden op de locaties zijn aangetroffen.'),
-        html.Li('Ook wordt er gecontroleerd of er soorten zijn gevonden die nooit eerder op de meetlocaties zijn waargenomen.')
-    ]),
-    html.P('Verder is de data geplot, alle meetdata worden opgedeeld per taxongroep, meetjaar en op basis van meetlocatie. De verwerkte waarde worden omgerekend naar relatieve waarden om dit vervolgens tegen jaren uit te zetten in grafieken. Er wordt een overzichtsgrafiek geplot waar alle locatie bij elkaar worden genomen. Ook wordt alle data per meetlocatie geplot. In het totaal gaat het om 122 plots.'),
-    html.P('Wat er nog toegevoegd gaat worden:'),
-    html.Ul(children= [
-        html.Li('Controleren of de coördinaten van de meeting dichtbij genoeg zijn van het meetpunt.'),
-        html.Li('Validatie van de sample volumes en oppervlaktes.'),
-        html.Li('Statistische tests op de data uitvoeren, om mogelijk wat te kunnen zeggen over correlaties door de jaren heen.'),
-        html.Li('Opmaak en leesbaarheid verbeteren.'),
-    ]),
-    html.Div(id= 'map-div', children=[
-        dl.Map(center=[53.32, 5.6463], zoom=7, children=[dl.TileLayer(), dl.GestureHandling(), dl.GeoJSON(data=geodata, cluster=True, zoomToBoundsOnClick=True, superClusterOptions={'radius': 120, 'extent': 250})]
-        )
+    html.Div(id='index-text-map', children=[
+        html.Div(id='index-text', children=[
+            html.H1('Geautomatiseerde validatie van Macro-Evertebraten'),
+            html.P('Dit rapport betreft de geautomatiseerde datavalidatiemethode voor het controleren van de dataoplevering van perceel A, B (Randmeren en Trintelzand) en C (Maas). Al de data is direct uit de aquadesk gehaald.'),
+            html.P('In dit rapport zijn de volgende validatie stappen uitgevoerd:'),
+            html.Ul(children= [
+                html.Li('Collectienummers zijn gevalideerd op notatie van het juiste jaartal.'), 
+                html.Li('Taxon statuscode van de gedetermineerde soorten worden gecontroleerd met de TWN lijst.'),
+                html.Li('Voor de taxongroepen Oligochaeta en Chironomiden is er gevalideerd of er wel minimaal 100 zijn gedetermineerd wanneer de berekende waarde 100 of hoger is.'),
+                html.Li('Voor de resterende taxongroepen is een soortgelijke validatie uitgevoerd maar dan met minimaal 50 gedetermineerde individuen.'),
+                html.Li('Er is gevalideerd wanneer er getallen met een factor worden doorgerekend of dit ook genoteerd is met een limietsymbool.'),
+                html.Li('De nieuwe data wordt vergeleken met historische data van de afgelopen 6 jaar om te kijken of er soorten niet zijn gevonden bij deze metingen die wel in het verleden op de locaties zijn aangetroffen.'),
+                html.Li('Ook wordt er gecontroleerd of er soorten zijn gevonden die nooit eerder op de meetlocaties zijn waargenomen.')
+            ]),
+            html.P('Verder is de data geplot, alle meetdata worden opgedeeld per taxongroep, meetjaar en op basis van meetlocatie. De verwerkte waarde worden omgerekend naar relatieve waarden om dit vervolgens tegen jaren uit te zetten in grafieken. Er wordt een overzichtsgrafiek geplot waar alle locatie bij elkaar worden genomen. Ook wordt alle data per meetlocatie geplot. In het totaal gaat het om 122 plots.'),
+            html.P('Wat er nog toegevoegd gaat worden:'),
+            html.Ul(children= [
+                html.Li('Controleren of de coördinaten van de meeting dichtbij genoeg zijn van het meetpunt.'),
+                html.Li('Validatie van de sample volumes en oppervlaktes.'),
+                html.Li('Statistische tests op de data uitvoeren, om mogelijk wat te kunnen zeggen over correlaties door de jaren heen.'),
+                html.Li('Opmaak en leesbaarheid verbeteren.'),
+            ])
+        ]),
+        html.Div(id= 'index-map', children=[
+            dl.Map(center=[53, 5], zoom=7, children=[
+                dl.TileLayer(), 
+                dl.GestureHandling(),
+                dl.GeoJSON(data=geodata, cluster=True, zoomToBoundsOnClick=True, superClusterOptions={'radius': 120, 'extent': 250})
+                ])
+        ])
     ]),
     html.Footer(footer),
-    html.Img(src=app.get_asset_url(logo)
-)
-    ]
-)
+    html.Img(src=app.get_asset_url(logo))
+])
 
 
 ## Abbundance graphs page ##
@@ -193,7 +198,7 @@ validation_page = html.Div(children= [
     ]),
     html.H1('Macroevertebraten Abundantie'),
     html.H2('2015-2021'),
-    html.H2('Validatie tabellen'),
+    html.H2('Validatie tabel'),
     html.Div(id='dropdown-and-table', children=[
         dcc.Dropdown(id= 'table_dropdown',
             options= [
