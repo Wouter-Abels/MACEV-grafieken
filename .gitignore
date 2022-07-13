@@ -1,2 +1,7 @@
 .DS_Store
 .ipynb_checkpoints
+Tests.py
+assets/__pycache__
+__pycache__/
+.gitignore
+.gitattributes
