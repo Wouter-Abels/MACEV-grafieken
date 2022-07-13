@@ -33,7 +33,7 @@ for object in unique_measurementobject:
     historic_location = historic_per_location.append(historic_location)
 total_plot_data = graphs.value_per_year(historic_and_current)
 logo = ('IW_RW_Logo_online_pos_nl.png')
-footer = 'Wouter Abels (wouterabels@rws.nl 13 Juli 2022 Python 3.9.7'
+footer = 'Wouter Abels (wouterabels@rws.nl) 13 Juli 2022 Python 3.9.7'
 
 
 ## Build App ##
