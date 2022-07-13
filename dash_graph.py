@@ -12,7 +12,7 @@ import json
 # File: dash_graph.py
 # Author: Wouter Abels (wouter.abels@rws.nl)
 # Created: 21/02/22
-# Last modified: 20/06/22
+# Last modified: 13/07/22
 # Python ver: 3.9.7
 #---------------------------------------------
 
@@ -32,7 +32,9 @@ for object in unique_measurementobject:
     historic_and_current = all_per_location.append(historic_and_current)
     historic_location = historic_per_location.append(historic_location)
 total_plot_data = graphs.value_per_year(historic_and_current)
-logo = 'assets/IW_RW_Logo_online_pos_nl.png'
+logo = ('W_RW_Logo_online_pos_nl.png')
+footer = 'Wouter Abels (wouterabels@rws.nl 13 Juli 2022 Python 3.9.7'
+
 
 ## Build App ##
 app = dash.Dash(__name__, title='Data Validatie')
@@ -75,8 +77,9 @@ index_page = html.Div(id='index', children= [
         dl.Map(center=[53.32, 5.6463], zoom=7, children=[dl.TileLayer(), dl.GestureHandling(), dl.GeoJSON(data=geodata, cluster=True, zoomToBoundsOnClick=True, superClusterOptions={'radius': 120, 'extent': 250})]
         )
     ]),
-    html.Footer('Wouter Abels (wouterabels@rws.nl 20 Juni 2022 Python 3.9.7'),
-    html.Img(src=logo)
+    html.Footer(footer),
+    html.Img(src=app.get_asset_url(logo)
+)
     ]
 )
 
@@ -117,8 +120,9 @@ graph_page = html.Div(id= 'graph-page', children= [
                 dcc.Graph(id= 'object_graph')
             ]),
         ]),
-    html.Footer('Wouter Abels (wouterabels@rws.nl 20 Juni 2022 Python 3.9.7'),
-    html.Img(src=logo)
+    html.Footer(footer),
+    html.Img(src=app.get_asset_url(logo)
+)
 ])  
 
 # App callback for the total or relative abundance graph
@@ -243,8 +247,9 @@ validation_page = html.Div(children= [
             style_as_list_view=True,
         )
     ]),
-    html.Footer('Wouter Abels (wouterabels@rws.nl) 20 Juni 2022 Python 3.9.7'),
-    html.Img(src=logo)
+    html.Footer(footer),
+    html.Img(src=app.get_asset_url(logo)
+)
     ]
 )
 
