@@ -3,3 +3,5 @@
 Tests.py
 assets/current_data.csv
 assets/historic_data.csv
+assets/__pycache__
+__pycache__/

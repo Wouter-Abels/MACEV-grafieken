@@ -1,12 +1,17 @@
 import pandas as pd
 import numpy as np
 
-historic_and_current = pd.read_csv('assets/historic_and_data.csv')
-historic_and_current['externalreference'] = historic_and_current['externalreference'].astype(str)
+historic_and_current = pd.read_csv('assets/historic_and_data_n.csv', dtype={'externalreference': str})
 current_data = historic_and_current.loc[historic_and_current['measurementdate'] >= '2021']
+measurementobjectnames = pd.unique(current_data['measurementobjectname'])
 historic_data = historic_and_current.loc[historic_and_current['measurementdate'] <= '2021']
+historic_location= []
+for object in measurementobjectnames:
+    historic_per_location = historic_data.loc[historic_data['measurementobjectname'] == object]
+    historic_location = historic_per_location.append(historic_location)
 class validations:
     
+    # Validate the Collection numbers 
     def collection(collection_data):
         return collection_data.loc[collection_data['externalreference'].str.startswith('2021') == False]
 
@@ -54,56 +59,36 @@ class validations:
                     pass
         return group_data
 
-    # # Limitsymbol > and factor check
-    # def factor_validation(self):
-    #     data, historic_and_data, data_historic = DataValidation().data_check()
-    #     print('\n***Validatie van limietsymbool bij gebruik van factor voor berekende data***')
-    #     colnum = pd.unique(data['externalreference'])
-    #     factor = data.groupby('externalreference')
-    #     for collectionnumber in colnum:
-    #         factorgroups = factor.get_group(collectionnumber)
-    #         factorgroups.to_csv('/Users/wouter/Documents/RWS/DataAnalyse/AquadeskData/testdata/limtisymbol.csv')
-    #         calculated = sum(factorgroups['calculatedvalue'])
-    #         measured = sum(factorgroups['measuredvalue'])
-    #         values = calculated / measured
-    #         if factorgroups['limitsymbol'].str.contains('>').any():
-    #             continue
-    #         elif values > 1:
-    #             print('Bij collectienummer: ' + collectionnumber + ' is wel een factor gebruikt maar geen limietsymbool gevonden')
-    #     print('Geen (andere) missende limietsymbolen bij gebruik van factoren gevonden')
+    def factor(factor_data):
+        externalreference = pd.unique(factor_data['externalreference'])
+        factor = factor_data.groupby('externalreference')
+        limit_data=[]
+        for reference in externalreference:
+            factorgroups = factor.get_group(reference)
+            calculated = sum(factorgroups['calculatedvalue'])
+            measured = sum(factorgroups['measuredvalue'])
+            values = calculated / measured
+            if factorgroups['limitsymbol'].str.contains('>').any():
+                continue
+            elif values > 1:
+                limit_data = factor_data.loc[(factor_data['externalreference'] == reference)].append(limit_data)
+        return limit_data
 
-    # # Check for missing taxa & new taxa, needs to be two columns (old, new) and grouped per taxongroup
-    # def new_old_taxa(self):
-    #     data, historic_and_data, data_historic = DataValidation().data_check()
-    #     print('\n***Controle missende taxa***')
-    #     print('Deze taxa zijn in voorgaande jaren wel in de meetlocaties gevonden maar niet in de huidige set:')
-    #     groups = pd.unique(data_historic['taxongroup'])
-    #     for group in groups:
-    #         data_group_new = data[data['taxongroup'].astype(str).str.contains(group)]
-    #         data_group_historic = data_historic[data_historic['taxongroup'].str.contains(group)]
-    #         new = np.sort(pd.unique(data_group_new['parameter']))
-    #         old = np.sort(pd.unique(data_group_historic['parameter']))
-    #         diff_old = np.setdiff1d(old, new)
-    #         diff_old = pd.DataFrame(data = diff_old, columns = ['parameter'])
-    #         if diff_old.empty == False:
-    #             print('\nTaxongroep: ' + str(group))
-    #             for index , row in diff_old.iterrows():
-    #                 print('Soort: '+ str(row['parameter']))
-    #         else:
-    #             pass        
-    #     print('\nGeen (andere) missende taxa gevonden')
-    #     print('\n***Controle nieuwe taxa***')
-    #     for group in groups:
-    #         data_group_new = data[data['taxongroup'].astype(str).str.contains(group)]
-    #         data_group_historic = data_historic[data_historic['taxongroup'].str.contains(group)]
-    #         new = np.sort(pd.unique(data_group_new['parameter']))
-    #         old = np.sort(pd.unique(data_group_historic['parameter']))
-    #         diff_new = np.setdiff1d(new, old)
-    #         diff_new = pd.DataFrame(data = diff_new, columns = ['parameter'])
-    #         if diff_new.empty == False:
-    #             print('\nTaxongroep: ' + str(group))
-    #             for index , row in diff_new.iterrows():
-    #                 print('Soort: '+ str(row['parameter']))
-    #         else:
-    #             pass
-    #     print('Geen (andere) nieuwe taxa gevonden')    
+    def missing(missing_current_data, missing_historic_data):
+        diff_old = pd.DataFrame(data = np.setdiff1d(np.sort(pd.unique(missing_historic_data['parameter'])), np.sort(pd.unique(missing_current_data['parameter']))), columns = ['parameter'])
+        parameters = pd.unique(diff_old['parameter']) 
+        old_data = []
+        for parameter in parameters:
+            print(parameter)
+            old_data = missing_current_data.loc[(missing_current_data['parameter'] == parameter)].append(old_data)
+
+        return old_data
+            
+
+    def new(new_current_data, new_historic_data):
+        diff_new = pd.DataFrame(data = np.setdiff1d(np.sort(pd.unique(new_current_data['parameter'])), np.sort(pd.unique(new_historic_data['parameter']))), columns = ['parameter'])
+        parameters = pd.unique(diff_new['parameter'])
+        new_data =[]
+        for parameter in parameters:
+            new_data = new_current_data.loc[(current_data['parameter'] == parameter)].append(new_data)
+        return new_data

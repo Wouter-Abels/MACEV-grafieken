@@ -1,3 +1,20 @@
+img { 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+}
+
+.link {
+    margin: 15px;
+}
+
+#map-div { 
+    margin: auto;
+    width: 90%;
+    height: 75vh;
+}
+
 h1 { 
     text-align: center;
     font-weight:400;
@@ -19,13 +36,11 @@ h2 {
 }
 
 p {
-    text-align: center;
     font-weight:300;
     margin: 16px 0;
     font-size: 16px;
     color:#000000;
     line-height: 1.25;
-    text-decoration-line: underline;
 }
 
 Footer {
@@ -36,4 +51,48 @@ Footer {
     color:#000000;
     line-height: 1.25;
     text-decoration-line: underline;
+}
+
+#graph-page{
+    margin: auto;
+    width: 90%;
+    height: 75vh;
+}
+
+#graph-dropdown-objects {
+    display: flex; 
+    flex-direction: row
+}
+
+#dropdown-objects {
+    padding: 10;
+    flex: 20%;
+}
+
+#graph-objects {
+    padding: 10;
+    flex: 80%;
+}
+
+#abundance-radio{
+    font-weight:300;
+    margin: 16px 0;
+    font-size: 20px;
+    color:#000000;
+    line-height: 1.25;
+}
+
+#dropdown-and-table{
+    margin: auto;
+    width: 90%;
+}
+
+#table_dropdown {
+    padding: 10;
+    flex: 20%;
+}
+
+#table_object {
+    padding: 10;
+    flex: 80%;
 }
