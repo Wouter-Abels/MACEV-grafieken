@@ -29,11 +29,11 @@ historic_and_current = []
 for object in unique_measurementobject:
     historic_per_location = historic_data.loc[historic_data['measurementobjectname'] == object]
     all_per_location = all_data.loc[all_data['measurementobjectname'] == object]
-    historic_and_current = all_per_location.append(historic_and_current)
-    historic_location = historic_per_location.append(historic_location)
+    historic_and_current = pd.concat([all_per_location, pd.DataFrame(historic_and_current)])
+    historic_location = pd.concat([historic_per_location, pd.DataFrame(historic_location)])
 total_plot_data = graphs.value_per_year(historic_and_current)
 logo = ('IW_RW_Logo_online_pos_nl.png')
-footer = 'Wouter Abels (wouterabels@rws.nl) 13 Juli 2022 Python 3.9.7'
+footer = 'Wouter Abels (wouterabels@rws.nl) 18 Juli 2022 Python 3.9.7'
 
 
 ## Build App ##
@@ -48,10 +48,9 @@ app.layout = html.Div(id= 'app', children= [
 ## Index Page ##
 # Configure Index page and map with measurement locations
 index_page = html.Div(id='index', children= [
-    html.Header(children=[
-        dcc.Link('Home', href='/', className='link'),
-        dcc.Link('Grafieken', href='/graphs', className='link'),
-        dcc.Link('Validatie', href='/validation', className='link')
+    html.Header(children=[dcc.Link('Home', href='/', className='link'), 
+    dcc.Link('Grafieken', href='/graphs', className='link'), 
+    dcc.Link('Validatie', href='/validation', className='link')
     ]),
     html.Div(id='index-text-map', children=[
         html.Div(id='index-text', children=[
