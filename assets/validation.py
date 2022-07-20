@@ -80,7 +80,6 @@ class validations:
         parameters = pd.unique(diff_old['parameter']) 
         old_data = []
         for parameter in parameters:
-            print(parameter)
             old_data = pd.concat([missing_current_data.loc[(missing_current_data['parameter'] == parameter)], pd.DataFrame(old_data)])
 
         return old_data

@@ -1,8 +1,53 @@
-.link {
-    margin: 15px;
+
+#navbar {
+    list-style-type: none;
+    margin-bottom: auto;
+    padding: auto;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    background-color: #f3f3f3;
+    z-index: 1;
+    
 }
 
-img { 
+.link{
+    float: left;
+    border-right: 1px solid #bbb;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+.link_active{
+    float: left;
+    border-right: 1px solid #bbb;
+    display: block;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    text-align: center;
+    background-color: rgb(34,65,111);
+}
+
+.link:hover{
+    background-color: rgb(34,65,111);
+    color: white;
+}
+
+#page{
+    margin: 5vh;
+    z-index: 2;
+}
+
+#logo { 
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -60,7 +105,6 @@ Footer {
 #index-text{
     width: 90%;
     flex: 60%;
-    padding-right: 15px;
 }
 
 #index-map{ 
@@ -68,7 +112,8 @@ Footer {
     width: 90%;
     flex: 40%;
     height: 70vh;
-    padding-left: 15px;
+    padding-top: 15px;
+    padding-left: 30px;
 }
 
 #graph-total{
@@ -121,4 +166,4 @@ Footer {
 #table_object {
     padding: 10;
     flex: 80%;
-}
+}  

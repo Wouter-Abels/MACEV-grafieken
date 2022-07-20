@@ -1,5 +1,6 @@
 import plotly.express as px
 from dash import dcc, html, dash, dash_table
+import dash_bootstrap_components as dbc
 import numpy as np
 import pandas as pd
 import dash_leaflet as dl
@@ -33,7 +34,7 @@ for object in unique_measurementobject:
     historic_location = pd.concat([historic_per_location, pd.DataFrame(historic_location)])
 total_plot_data = graphs.value_per_year(historic_and_current)
 logo = ('IW_RW_Logo_online_pos_nl.png')
-footer = 'Wouter Abels (wouterabels@rws.nl) 18 Juli 2022 Python 3.9.7'
+footer = 'Wouter Abels (wouterabels@rws.nl) 20 Juli 2022 Python 3.9.7'
 
 
 ## Build App ##
@@ -48,85 +49,94 @@ app.layout = html.Div(id= 'app', children= [
 ## Index Page ##
 # Configure Index page and map with measurement locations
 index_page = html.Div(id='index', children= [
-    html.Header(children=[dcc.Link('Home', href='/', className='link'), 
-    dcc.Link('Grafieken', href='/graphs', className='link'), 
-    dcc.Link('Validatie', href='/validation', className='link')
-    ]),
-    html.Div(id='index-text-map', children=[
-        html.Div(id='index-text', children=[
-            html.H1('Geautomatiseerde validatie van Macro-Evertebraten'),
-            html.P('Dit rapport betreft de geautomatiseerde datavalidatiemethode voor het controleren van de dataoplevering van perceel A, B (Randmeren en Trintelzand) en C (Maas). Al de data is direct uit de aquadesk gehaald.'),
-            html.P('In dit rapport zijn de volgende validatie stappen uitgevoerd:'),
-            html.Ul(children= [
-                html.Li('Collectienummers zijn gevalideerd op notatie van het juiste jaartal.'), 
-                html.Li('Taxon statuscode van de gedetermineerde soorten worden gecontroleerd met de TWN lijst.'),
-                html.Li('Voor de taxongroepen Oligochaeta en Chironomiden is er gevalideerd of er wel minimaal 100 zijn gedetermineerd wanneer de berekende waarde 100 of hoger is.'),
-                html.Li('Voor de resterende taxongroepen is een soortgelijke validatie uitgevoerd maar dan met minimaal 50 gedetermineerde individuen.'),
-                html.Li('Er is gevalideerd wanneer er getallen met een factor worden doorgerekend of dit ook genoteerd is met een limietsymbool.'),
-                html.Li('De nieuwe data wordt vergeleken met historische data van de afgelopen 6 jaar om te kijken of er soorten niet zijn gevonden bij deze metingen die wel in het verleden op de locaties zijn aangetroffen.'),
-                html.Li('Ook wordt er gecontroleerd of er soorten zijn gevonden die nooit eerder op de meetlocaties zijn waargenomen.')
-            ]),
-            html.P('Verder is de data geplot, alle meetdata worden opgedeeld per taxongroep, meetjaar en op basis van meetlocatie. De verwerkte waarde worden omgerekend naar relatieve waarden om dit vervolgens tegen jaren uit te zetten in grafieken. Er wordt een overzichtsgrafiek geplot waar alle locatie bij elkaar worden genomen. Ook wordt alle data per meetlocatie geplot. In het totaal gaat het om 122 plots.'),
-            html.P('Wat er nog toegevoegd gaat worden:'),
-            html.Ul(children= [
-                html.Li('Controleren of de coördinaten van de meeting dichtbij genoeg zijn van het meetpunt.'),
-                html.Li('Validatie van de sample volumes en oppervlaktes.'),
-                html.Li('Statistische tests op de data uitvoeren, om mogelijk wat te kunnen zeggen over correlaties door de jaren heen.'),
-                html.Li('Opmaak en leesbaarheid verbeteren.'),
-            ])
-        ]),
-        html.Div(id= 'index-map', children=[
-            dl.Map(center=[53, 5], zoom=7, children=[
-                dl.TileLayer(), 
-                dl.GestureHandling(),
-                dl.GeoJSON(data=geodata, cluster=True, zoomToBoundsOnClick=True, superClusterOptions={'radius': 120, 'extent': 250})
-                ])
+    html.Div(id='navbar', children=[
+        html.Header(children=[
+            dcc.Link('Home', href='/', className='link_active'), 
+            dcc.Link('Grafieken', href='/graphs', className='link'), 
+            dcc.Link('Validatie', href='/validation', className='link')
         ])
     ]),
-    html.Footer(footer),
-    html.Img(src=app.get_asset_url(logo))
+    html.Div(id='page', children=[
+        html.Div(id='index-text-map', children=[
+            html.Div(id='index-text', children=[
+                html.H1('Geautomatiseerde validatie van Macro-Evertebraten'),
+                html.P('Dit rapport betreft de geautomatiseerde datavalidatiemethode voor het controleren van de dataoplevering van perceel A, B (Randmeren en Trintelzand) en C (Maas).'),
+                html.P('In dit rapport zijn de volgende validatie stappen uitgevoerd:'),
+                html.Ul(children= [
+                    html.Li('Collectienummers zijn gevalideerd op notatie van het juiste jaartal.'), 
+                    html.Li('Taxon statuscode van de gedetermineerde soorten worden gecontroleerd met de TWN lijst.'),
+                    html.Li('Voor de taxongroepen Oligochaeta en Chironomiden is er gevalideerd of er wel minimaal 100 zijn gedetermineerd wanneer de berekende waarde 100 of hoger is.'),
+                    html.Li('Voor de resterende taxongroepen is een soortgelijke validatie uitgevoerd maar dan met minimaal 50 gedetermineerde individuen.'),
+                    html.Li('Er is gevalideerd wanneer er getallen met een factor worden doorgerekend of dit ook genoteerd is met een limietsymbool.'),
+                    html.Li('De nieuwe data wordt vergeleken met historische data van de afgelopen 6 jaar om te kijken of er soorten niet zijn gevonden bij deze metingen die wel in het verleden op de locaties zijn aangetroffen.'),
+                    html.Li('Ook wordt er gecontroleerd of er soorten zijn gevonden die nooit eerder op de meetlocaties zijn waargenomen.')
+                ]),
+                html.P('Verder is de data geplot, alle meetdata worden opgedeeld per taxongroep, meetjaar en op basis van meetlocatie. De verwerkte waarde worden omgerekend naar relatieve waarden om dit vervolgens tegen jaren uit te zetten in grafieken. Er wordt een overzichtsgrafiek geplot waar alle locatie bij elkaar worden genomen. Ook wordt alle data per meetlocatie geplot. In het totaal gaat het om 122 plots.'),
+                html.P('Wat er nog toegevoegd gaat worden:'),
+                html.Ul(children= [
+                    html.Li('Controleren of de coördinaten van de meeting dichtbij genoeg zijn van het meetpunt.'),
+                    html.Li('Validatie van de sample volumes en oppervlaktes.'),
+                    html.Li('Statistische tests op de data uitvoeren, om mogelijk wat te kunnen zeggen over correlaties door de jaren heen.'),
+                    html.Li('Opmaak en leesbaarheid verbeteren.'),
+                ])
+            ]),
+            html.Div(id= 'index-map', children=[
+                dl.Map(center=[53, 5], zoom=7, children=[
+                    dl.TileLayer(), 
+                    dl.GestureHandling(),
+                    dl.GeoJSON(data=geodata, cluster=True, zoomToBoundsOnClick=True, superClusterOptions={'radius': 120, 'extent': 250})
+                    ])
+            ])
+        ]),
+        html.Footer(footer),
+        html.Img(id='logo', src=app.get_asset_url(logo))
+    ])
 ])
 
 
 ## Abbundance graphs page ##
 # Configure the page with the graphs
 graph_page = html.Div(id= 'graph-page', children= [
-    html.Header(children= [
-        dcc.Link('Home', href='/', className='link'),
-        dcc.Link('Grafieken', href='/graphs', className='link'),
-        dcc.Link('Validatie', href='validation', className='link')
+    html.Div(id='navbar', children=[
+        html.Header(children=[
+            dcc.Link('Home', href='/', className='link'), 
+            dcc.Link('Grafieken', href='/graphs', className='link_active'), 
+            dcc.Link('Validatie', href='/validation', className='link'),
+        ])
     ]),
-    html.Div(id='graph-total', children=[
-        html.H1('Macroevertebraten Abundantie'),
-        html.H2('2015-2021')
-]),
-    html.H2('Grafieken'),
-    html.Div(id='abundance-radio', children=[
-        dcc.RadioItems(id='abundance_radio',
-            options= [
-                {'label': 'Totale Abundantie', 'value': 'Totale Abundantie'},
-                {'label': 'Relatieve Abundantie', 'value': 'Relatieve Abundantie'}
-            ],
-            value= 'Totale Abundantie',
-            labelStyle={'display': 'inline-block'},
-            style= dict(display='flex',justifyContent='center')
-        )
-    ]),
-        dcc.Graph(id= 'abundance_graph'),
-        html.H2('Abundantie per meetobject'),
-        html.Div(id='graph-dropdown-objects', children=[
-            html.Div(id='dropdown-objects', children=[
-                dcc.Dropdown(id= 'object_dropdown',
-                options= [{'label': i, 'value': i} for i in unique_measurementobject],
-                value= unique_measurementobject[0], clearable=False)
-            ]),
-            html.Div(id= 'graph-objects', children= [
-                dcc.Graph(id= 'object_graph')
-            ]),
+    html.Div(id='page', children=[
+        html.Div(id='graph-total', children=[
+            html.H1('Macroevertebraten Abundantie'),
+            html.H2('2015-2021')
         ]),
-    html.Footer(footer),
-    html.Img(src=app.get_asset_url(logo)
-)
+        html.H2('Grafieken'),
+        html.Div(id='abundance-radio', children=[
+            dcc.RadioItems(id='abundance_radio',
+                options= [
+                    {'label': 'Totale Abundantie', 'value': 'Totale Abundantie'},
+                    {'label': 'Relatieve Abundantie', 'value': 'Relatieve Abundantie'}
+                ],
+                value= 'Totale Abundantie',
+                labelStyle={'display': 'inline-block'},
+                style= dict(display='flex',justifyContent='center')
+            )
+        ]),
+            dcc.Graph(id= 'abundance_graph'),
+            html.H2('Abundantie per meetobject'),
+            html.Div(id='graph-dropdown-objects', children=[
+                html.Div(id='dropdown-objects', children=[
+                    dcc.Dropdown(id= 'object_dropdown',
+                    options= [{'label': i, 'value': i} for i in unique_measurementobject],
+                    value= unique_measurementobject[0], clearable=False)
+                ]),
+                html.Div(id= 'graph-objects', children= [
+                    dcc.Graph(id= 'object_graph')
+                ]),
+            ]),
+        html.Footer(footer),
+        html.Img(id='logo', src=app.get_asset_url(logo)
+        )
+    ])
 ])  
 
 # App callback for the total or relative abundance graph
@@ -190,72 +200,75 @@ def graph_object_update(dropdown_object, dropdown_value):
 ## Data validation ##
 # Configure the validation page
 validation_page = html.Div(children= [
-    html.Header(children= [
-        dcc.Link('Home', href='/', className='link'),
-        dcc.Link('Grafieken', href='/graphs', className='link'),
-        dcc.Link('Validatie', href='/validation', className='link')
+    html.Div(id='navbar', children=[
+        html.Header(children=[
+            dcc.Link('Home', href='/', className='link'), 
+            dcc.Link('Grafieken', href='/graphs', className='link'), 
+            dcc.Link('Validatie', href='/validation', className='link_active')
+        ])
     ]),
-    html.H1('Macroevertebraten Abundantie'),
-    html.H2('2015-2021'),
-    html.H2('Validatie tabel'),
-    html.Div(id='dropdown-and-table', children=[
-        dcc.Dropdown(id= 'table_dropdown',
-            options= [
-                {'label': 'Collectienummer Validatie', 'value': 'collectie'},
-                {'label': 'Taxonstatus Validatie', 'value': 'taxonstatus'},
-                {'label': 'Oligochaeten Validatie', 'value': 'oligochaeten'},
-                {'label': 'Chironomiden Validatie', 'value': 'chironomiden'},
-                {'label': 'Taxongroep Validatie', 'value': 'taxongroep'},
-                {'label': 'Factor Validatie', 'value': 'factor'},
-                {'label': 'Missende Taxa', 'value': 'missend'},
-                {'label': 'Nieuwe Taxa', 'value': 'nieuw'}
+    html.Div(id='page', children=[
+        html.H1('Macroevertebraten Abundantie'),
+        html.H2('2015-2021'),
+        html.H2('Validatie tabel'),
+        html.Div(id='dropdown-and-table', children=[
+            dcc.Dropdown(id= 'table_dropdown',
+                options= [
+                    {'label': 'Collectienummer Validatie', 'value': 'collectie'},
+                    {'label': 'Taxonstatus Validatie', 'value': 'taxonstatus'},
+                    {'label': 'Oligochaeten Validatie', 'value': 'oligochaeten'},
+                    {'label': 'Chironomiden Validatie', 'value': 'chironomiden'},
+                    {'label': 'Taxongroep Validatie', 'value': 'taxongroep'},
+                    {'label': 'Factor Validatie', 'value': 'factor'},
+                    {'label': 'Missende Taxa', 'value': 'missend'},
+                    {'label': 'Nieuwe Taxa', 'value': 'nieuw'}
+                    ],
+                value='collectie'),
+            dash_table.DataTable(id= 'table_object',
+                columns=[{'name': i, 'id':i} for i in historic_and_current.columns],
+                sort_action='native',
+                filter_action='native', 
+                css=[{
+                        'selector': '.previous-page, '
+                        '.next-page, .first-page, '
+                        '.last-page, .export, .show-hide',
+                        'rule': 'color: black;',
+                    },
+                    {
+                        'selector': '.current-page',
+                        'rule': 'padding-right: 5px;',
+                    },
                 ],
-            value='collectie'),
-        dash_table.DataTable(id= 'table_object',
-            columns=[{'name': i, 'id':i} for i in historic_and_current.columns],
-            sort_action='native',
-            filter_action='native', 
-            css=[{
-                    'selector': '.previous-page, '
-                    '.next-page, .first-page, '
-                    '.last-page, .export, .show-hide',
-                    'rule': 'color: black;',
+                style_cell={
+                    'whiteSpace': 'normal',
+                    'width': '100px',
+                    'textAlign': 'center',
+                    'height': '15px',
+                    'padding-left': '10px',
+                    'padding-right': '10px'
                 },
-                {
-                    'selector': '.current-page',
-                    'rule': 'padding-right: 5px;',
+                style_data_conditional=[
+                    {
+                        'if': {'row_index': 'odd'},
+                        'backgroundColor': 'rgb(240, 240, 240)',
+                    },
+                ],
+                style_table={
+                    'height': 'auto',
+                    'width': 'auto',
+                    'overflowX': 'auto',
+                    'overflowY': 'auto',
                 },
-            ],
-            style_cell={
-                'whiteSpace': 'normal',
-                'width': '100px',
-                'textAlign': 'center',
-                'height': '15px',
-                'padding-left': '10px',
-                'padding-right': '10px'
-            },
-            style_data_conditional=[
-                {
-                    'if': {'row_index': 'odd'},
-                    'backgroundColor': 'rgb(240, 240, 240)',
-                },
-            ],
-            style_table={
-                'height': 'auto',
-                'width': 'auto',
-                'overflowX': 'auto',
-                'overflowY': 'auto',
-            },
-            cell_selectable=False,
-            page_size = 16,
-            style_as_list_view=True,
+                cell_selectable=False,
+                page_size = 16,
+                style_as_list_view=True,
+            )
+        ]),
+        html.Footer(footer),
+        html.Img(id='logo', src=app.get_asset_url(logo)
         )
-    ]),
-    html.Footer(footer),
-    html.Img(src=app.get_asset_url(logo)
-)
-    ]
-)
+    ])
+])
 
 # Aap callback for the dropdown menu in validation page
 @app.callback(
