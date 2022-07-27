@@ -14,7 +14,7 @@ import json
 # Author: Wouter Abels (wouter.abels@rws.nl)
 # Created: 21/02/22
 # Last modified: 13/07/22
-# Python ver: 3.9.7
+# Python ver: 3.10.4
 #---------------------------------------------
 
 ## Load data ##
@@ -314,4 +314,4 @@ def display_page(pathname):
 
 ## Run app ##
 if __name__ == '__main__':
-    app.run_server()   
+    app.run_server()
