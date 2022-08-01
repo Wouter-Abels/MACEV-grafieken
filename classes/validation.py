@@ -1,15 +1,6 @@
 import pandas as pd
 import numpy as np
 
-historic_and_current = pd.read_csv('assets/historic_and_data_n.csv', dtype={'externalreference': str})
-current_data = historic_and_current.loc[historic_and_current['measurementdate'] >= '2021']
-measurementobjectnames = pd.unique(current_data['measurementobjectname'])
-historic_data = historic_and_current.loc[historic_and_current['measurementdate'] <= '2021']
-historic_location= []
-for object in measurementobjectnames:
-    historic_per_location = historic_data.loc[historic_data['measurementobjectname'] == object]
-    historic_location = pd.concat([historic_per_location, pd.DataFrame(historic_location)])
-
 class validations:
     
     # Validate the Collection numbers 
