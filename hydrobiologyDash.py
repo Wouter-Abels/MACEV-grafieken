@@ -406,7 +406,7 @@ validation_page = html.Div(
                             className='link_active'
                         ),
                         dcc.Link(
-                            'Statistiek', 
+                            'Statistiek',
                             href='/statistics', 
                             className='link'
                         )
