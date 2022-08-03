@@ -1,8 +1,11 @@
+from ast import Load
+from itertools import dropwhile
 import json
 import numpy as np
 import pandas as pd
 import dash_leaflet as dl
 import plotly.express as px
+from classes.LoadData import LoadData
 from classes.graph import graphs
 from classes.validation import validations
 from dash import dcc, html, dash, dash_table, Input, Output
@@ -17,23 +20,15 @@ from dash import dcc, html, dash, dash_table, Input, Output
 
 ## Load data ##
 # JSON geodata of measurementobjects RWS
-with open ('data/measurementobjects_rws.json', 'r') as f:
-    geodata = json.load(f)
+geo_data = LoadData.geo_data()
 
 #MACEV data from 2015 till 2021
-all_data = pd.read_csv('data/macev_2015_2021.csv', dtype={'externalreference': str})
-all_data = all_data.drop(['name', 'taxongroup_twn', 'synonymname', 'maintypecode', 'code'], axis= 1)
-current_data = all_data.loc[all_data['measurementdate'] >= '2021']
-historic_data = all_data.loc[all_data['measurementdate'] <= '2021']
-unique_measurementobject = np.sort(pd.unique(current_data['measurementobjectname']))
-historic_location= []
-historic_and_current = []
-for object in unique_measurementobject:
-    historic_per_location = historic_data.loc[historic_data['measurementobjectname'] == object]
-    all_per_location = all_data.loc[all_data['measurementobjectname'] == object]
-    historic_and_current = pd.concat([all_per_location, pd.DataFrame(historic_and_current)])
-    historic_location = pd.concat([historic_per_location, pd.DataFrame(historic_location)])
+current_data, historic_data, unique_measurementobject, historic_and_current = LoadData.macev_data()
+
+
+# Data for abundance plot
 total_plot_data = graphs.value_per_year(historic_and_current)
+
 
 logo = ('IW_RW_Logo_online_pos_nl.png')
 footer = 'Wouter Abels (wouterabels@rws.nl) 20 Juli 2022 Python 3.9.7'
@@ -174,7 +169,7 @@ index_page = html.Div(
                                         dl.TileLayer(),
                                         dl.GestureHandling(),
                                         dl.GeoJSON(
-                                            data=geodata,
+                                            data=geo_data,
                                             cluster=True,
                                             zoomToBoundsOnClick=True,
                                             superClusterOptions={
@@ -423,7 +418,7 @@ validation_page = html.Div(
                             ],
                             value="collection",
                         ),
-                        dash_table.DataTable(
+                        dash_table.DataTable(     
                             id="table_object",
                             columns=[
                                 {"name": i, "id": i} for i in historic_and_current
@@ -483,22 +478,14 @@ validation_page = html.Div(
 
 # The table selections with validation data
 def table_update(dropdown_value):
-    if dropdown_value == 'collectie':
-        return validations.collection(current_data).to_dict('records')
-    elif dropdown_value == 'taxonstatus':
-        return validations.taxonstatus(current_data).to_dict('records')
-    elif dropdown_value == 'oligochaeten':
-        return validations.oligochaeta(current_data).to_dict('records')
-    elif dropdown_value == 'chironomiden':
-        return validations.chironomidae(current_data).to_dict('records')
-    elif dropdown_value == 'taxongroep':
-        return validations.taxongroup(current_data).to_dict('records')
-    elif dropdown_value == 'factor':
-        return validations.factor(current_data).to_dict('records')
-    elif dropdown_value == 'missend':
-        return validations.missing(current_data, historic_data).to_dict('records')
-    elif dropdown_value == 'nieuw':
-        return validations.new(current_data, historic_data).to_dict('records')
+    current_data_validations = ['collection', 'taxonstatus', 'oligochaeta', 'chironomidae', 'taxongroup', 'factor']
+    current_and_historic_data_validations = ['missing','new']
+    if dropdown_value in current_data_validations:
+        table_data = getattr(validations, dropdown_value)
+        return table_data(current_data).to_dict('records')
+    elif dropdown_value in current_and_historic_data_validations:
+        table_data = getattr(validations, dropdown_value)
+        return table_data(current_data, historic_data).to_dict('records')
 
 
 ## Pagination ##
@@ -508,14 +495,17 @@ def table_update(dropdown_value):
     Input('url', 'pathname')
 )
 
+
 # Configure the multiple pages
 def display_page(pathname):
-    if pathname == '/graphs':
-        return graph_page
-    elif pathname == '/validation':
-        return validation_page
-    else:
-        return index_page
+    """Redirects webpage to selected page from navbar."""
+    paths = {
+        '/': index_page,
+        '/graphs': graph_page,
+        '/validation': validation_page,
+        # '/statistics': statistics_page,
+    }
+    return paths.get(pathname)
 
 ## Run app ##
 if __name__ == '__main__':

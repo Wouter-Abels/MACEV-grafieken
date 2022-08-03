@@ -81,5 +81,5 @@ class validations:
         parameters = pd.unique(diff_new['parameter'])
         new_data =[]
         for parameter in parameters:
-            new_data = pd.concat([new_current_data.loc[(current_data['parameter'] == parameter)], pd.DataFrame(new_data)])
+            new_data = pd.concat([new_current_data.loc[(new_current_data['parameter'] == parameter)], pd.DataFrame(new_data)])
         return new_data
