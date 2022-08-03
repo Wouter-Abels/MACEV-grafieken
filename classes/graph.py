@@ -1,6 +1,6 @@
 import pandas as pd
 
-class graphs:
+class Graphs:
 
     macev_taxongroup_colours = {
     'Annelida/Platyhelminthes - Hirudinea':'aqua', \
@@ -60,8 +60,8 @@ class graphs:
         return datalocation
 
     def relative_data_location_per_year(object, historic_and_current):
-        relative_data_location_year = graphs.data_location(object, historic_and_current) 
-        relative_data_location_year = graphs.value_per_year(relative_data_location_year)
+        relative_data_location_year = Graphs.data_location(object, historic_and_current) 
+        relative_data_location_year = Graphs.value_per_year(relative_data_location_year)
         relative_data_location_year = relative_data_location_year
         return relative_data_location_year
     

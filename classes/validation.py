@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-class validations:
+class Validations:
     
     # Validate the Collection numbers 
     def collection(collection_data):
